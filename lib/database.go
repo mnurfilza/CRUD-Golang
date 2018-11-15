@@ -13,6 +13,7 @@ type Table interface {
 	Field() ([]string, []interface{})
 	PrimaryKey() ([]string, []interface{})
 	Structur() Table
+	AutoNumber() bool
 }
 
 // type Table struct {
@@ -56,10 +57,18 @@ func CreateTable(db *sql.DB, query string) error {
 }
 
 func Insert(db *sql.DB, t Table) error {
-	_, dst := t.Field()
-	query := fmt.Sprintf("INSERT INTO %s VALUES (%s)", t.Name(), ToVariable(t))
-	_, err := db.Exec(query, dst...)
+	fields, dst := t.Field()
+	fieldsPK, dstPK := t.PrimaryKey()
+	var err error
+	if t.AutoNumber() {
+		query := fmt.Sprintf("INSERT INTO %s(%s) VALUES (%s) RETURNING %s", t.Name(), strings.Join(fields[1:], ","), ToVariable(t), fieldsPK[0])
+		err = db.QueryRow(query, dst[1:]...).Scan(dstPK...)
+	} else {
+		query := fmt.Sprintf("INSERT INTO %s VALUES (%s) RETURNING %s", t.Name(), ToVariable(t))
+		_, err = db.Exec(query, dst...)
+	}
 	return err
+
 }
 
 func Delete(db *sql.DB, t Table) error {
@@ -81,8 +90,12 @@ func Get(db *sql.DB, t Table) error {
 func ToVariable(t Table) string {
 	fields, _ := t.Field()
 	var temp []string
-	for index, _ := range fields {
-		temp = append(temp, fmt.Sprintf("$%d", index+1))
+	lenFields := len(fields)
+	if t.AutoNumber() {
+		lenFields += 1
+	}
+	for i := 1; i <= lenFields; i++ {
+		temp = append(temp, fmt.Sprintf("$%d", +1))
 
 	}
 	var result = strings.Join(temp, ",")
