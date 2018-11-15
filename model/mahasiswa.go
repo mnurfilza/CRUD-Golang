@@ -37,6 +37,9 @@ func (m *Mahasiswa) PrimaryKey() ([]string, []interface{}) {
 func (m *Mahasiswa) Structur() lib.Table {
 	return &Mahasiswa{}
 }
+func (m *Mahasiswa) AutoNumber() bool {
+	return false
+}
 
 func (m *Mahasiswa) Insert(db *sql.DB) error {
 	return lib.Insert(db, m)

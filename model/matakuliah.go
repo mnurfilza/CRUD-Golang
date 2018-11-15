@@ -35,6 +35,9 @@ func (k *Matakuliah) PrimaryKey() ([]string, []interface{}) {
 func (k *Matakuliah) Structur() lib.Table {
 	return &Matakuliah{}
 }
+func (k *Matakuliah) AutoNumber() bool {
+	return false
+}
 func (k *Matakuliah) Insert(db *sql.DB) error {
 	return lib.Insert(db, k)
 }

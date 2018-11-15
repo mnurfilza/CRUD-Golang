@@ -62,9 +62,10 @@ func Insert(db *sql.DB, t Table) error {
 	var err error
 	if t.AutoNumber() {
 		query := fmt.Sprintf("INSERT INTO %s(%s) VALUES (%s) RETURNING %s", t.Name(), strings.Join(fields[1:], ","), ToVariable(t), fieldsPK[0])
+		fmt.Println(query)
 		err = db.QueryRow(query, dst[1:]...).Scan(dstPK...)
 	} else {
-		query := fmt.Sprintf("INSERT INTO %s VALUES (%s) RETURNING %s", t.Name(), ToVariable(t))
+		query := fmt.Sprintf("INSERT INTO %s(%s) VALUES (%s)", t.Name(), strings.Join(fields, ","), ToVariable(t))
 		_, err = db.Exec(query, dst...)
 	}
 	return err
@@ -92,10 +93,10 @@ func ToVariable(t Table) string {
 	var temp []string
 	lenFields := len(fields)
 	if t.AutoNumber() {
-		lenFields += 1
+		lenFields -= 1
 	}
-	for i := 1; i <= lenFields; i++ {
-		temp = append(temp, fmt.Sprintf("$%d", +1))
+	for i := 0; i < lenFields; i++ {
+		temp = append(temp, fmt.Sprintf("$%d", i+1))
 
 	}
 	var result = strings.Join(temp, ",")

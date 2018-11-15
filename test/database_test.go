@@ -4,6 +4,7 @@ import (
 	"Latihan_crud/lib"
 	"Latihan_crud/model"
 	"database/sql"
+	"fmt"
 	"testing"
 )
 
@@ -89,32 +90,37 @@ func TestDatabase(t *testing.T) {
 // }
 
 func initDatabase() (*sql.DB, error) {
-	db, err := lib.Connect(username, password, databaseDefault)
+	dbInit, err := lib.Connect(username, password, databaseDefault)
 	if err != nil {
+		fmt.Println("error 1")
 		return nil, err
 	}
-	if err = lib.DropDB(db, namaDatabase); err != nil {
+	if err = lib.DropDB(dbInit, namaDatabase); err != nil {
+		fmt.Println("error 2")
 		return nil, err
 	}
-	if err = lib.CreateDB(db, namaDatabase); err != nil {
+	if err = lib.CreateDB(dbInit, namaDatabase); err != nil {
+		fmt.Println("error 3")
 		return nil, err
 	}
-	db.Close()
+	dbInit.Close()
 
-	db, err = lib.Connect(username, password, namaDatabase)
+	db, err := lib.Connect(username, password, namaDatabase)
 	if err != nil {
+		fmt.Println("error 4")
 		return nil, err
 	}
 	if err = lib.CreateTable(db, model.TbMahasiswa); err != nil {
-		return nil, err
-	}
-	db.Close()
-
-	db, err = lib.Connect(username, password, namaDatabase)
-	if err != nil {
+		fmt.Println("error 5")
 		return nil, err
 	}
 	if err = lib.CreateTable(db, model.TbMatkul); err != nil {
+
+		fmt.Println("error 6")
+		return nil, err
+	}
+	if err = lib.CreateTable(db, model.TbNilai); err != nil {
+		fmt.Println("error 7")
 		return nil, err
 	}
 	return db, nil

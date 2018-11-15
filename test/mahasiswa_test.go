@@ -35,7 +35,7 @@ func TestInsertMhs(t *testing.T) {
 			compareMahasiswa(t, got, dataInsert)
 		}
 	})
-	
+
 	t.Run("Testing Update Get", func(t *testing.T) {
 		update := map[string]interface{}{
 			"nama": "AIRTAS",

@@ -16,14 +16,14 @@ type Nilai struct {
 }
 
 var TbNilai string = `
-CREATE TABLE nilai(
-	idNilai SERIAL PRIMARY KEY NOT NULL,
-	kd_mk VARCHAR(10)NOT NULL,
-	NPM VARCHAR(35)NOT NULL,
-	UAS INT(5)NOT NULL,
-	UTS INT(5)NOT NULL,
-	total INT(5)NOT NULL,
-	index VARCHAR(5)NOT NULL
+CREATE TABLE nilai (
+	idnilai SERIAL PRIMARY KEY,
+	kd_mk VARCHAR(10) NOT NULL,
+	npm VARCHAR(35) NOT NULL,
+	uas INT NOT NULL,
+	uts INT NOT NULL,
+	total INT NOT NULL,
+	index VARCHAR(5) NOT NULL
 );
 `
 
@@ -32,13 +32,27 @@ func (n *Nilai) Name() string {
 }
 
 func (n *Nilai) Field() ([]string, []interface{}) {
-	fields := []string{"IdNilai", "kd_mk", "NPM", "UAS", "UTS", "total", "index"}
+	fields := []string{"Idnilai", "kd_mk", "npm", "uas", "uts", "total", "index"}
+	n.Total = 0
+	if n.UAS != 0 && n.UTS != 0 {
+		n.Index = "E"
+	}
+	n.Total = (n.UTS + n.UAS) / 2
+
+	var z uint = uint(n.Total)
+	if z > 85 {
+		n.Index = "A"
+	} else if z > 75 {
+		n.Index = "B"
+	} else {
+		n.Index = "E"
+	}
 	dst := []interface{}{&n.IdNilai, &n.Kd_mk, &n.NPM, &n.UAS, &n.UTS, &n.Total, &n.Index}
 	return fields, dst
 }
 
 func (n *Nilai) PrimaryKey() ([]string, []interface{}) {
-	fields := []string{"IdNilai"}
+	fields := []string{"idnilai"}
 	dst := []interface{}{&n.IdNilai}
 	return fields, dst
 
@@ -48,20 +62,11 @@ func (n *Nilai) Structur() lib.Table {
 	return &Nilai{}
 }
 
+func (n *Nilai) AutoNumber() bool {
+	return true
+
+}
 func (n *Nilai) Insert(db *sql.DB) error {
-	result := 0
-	if n.UAS != 0 && n.UTS != 0 {
-		n.Index = "E"
-	}
-	result = n.UTS + n.UAS/2
-	var z uint = uint(result)
-	if z > 85 {
-		n.Index = "A"
-	} else if z > 75 {
-		n.Index = "B"
-	} else {
-		n.Index = "E"
-	}
 	return lib.Insert(db, n)
 }
 
