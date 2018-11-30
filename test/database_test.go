@@ -13,7 +13,7 @@ var username, password, namaDatabase, databaseDefault string
 func init() {
 	username = "postgres"
 	password = "rahasia"
-	namaDatabase = "latihancrud"
+	namaDatabase = "studentsite"
 	databaseDefault = "postgres"
 }
 func TestDatabase(t *testing.T) {

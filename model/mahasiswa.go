@@ -6,9 +6,9 @@ import (
 )
 
 type Mahasiswa struct {
-	Nama  string
-	NPM   string
-	Kelas string
+	Nama  string `json: "nama"`
+	NPM   string `json: "npm"`
+	Kelas string `json: "kelas"`
 }
 
 var TbMahasiswa string = `

@@ -3,16 +3,17 @@ package model
 import (
 	"Latihan_crud/lib"
 	"database/sql"
+	"fmt"
 )
 
 type Nilai struct {
-	IdNilai int
-	Kd_mk   string
-	NPM     string
-	UAS     int
-	UTS     int
-	Total   int
-	Index   string
+	IdNilai int     `json:"idnilai"`
+	Kd_mk   string  `json:"kode_matkul"`
+	NPM     string  `json:"npm"`
+	UAS     float64 `json:"uas"`
+	UTS     float64 `json:"uts"`
+	Total   float64 `json:"total"`
+	Index   string  `json:"index"`
 }
 
 var TbNilai string = `
@@ -23,7 +24,7 @@ CREATE TABLE nilai (
 	uas INT NOT NULL,
 	uts INT NOT NULL,
 	total INT NOT NULL,
-	index VARCHAR(5) NOT NULL
+	grade VARCHAR(5) NOT NULL
 );
 `
 
@@ -32,7 +33,7 @@ func (n *Nilai) Name() string {
 }
 
 func (n *Nilai) Field() ([]string, []interface{}) {
-	fields := []string{"Idnilai", "kd_mk", "npm", "uas", "uts", "total", "index"}
+	fields := []string{"Idnilai", "kd_mk", "npm", "uas", "uts", "total", "grade"}
 	n.Total = 0
 	if n.UAS != 0 && n.UTS != 0 {
 		n.Index = "E"
@@ -79,6 +80,39 @@ func (n *Nilai) Get(db *sql.DB) error {
 }
 
 func (n *Nilai) Update(db *sql.DB, data map[string]interface{}) error {
+	_, utsOk := data["uts"]
+	_, uasOk := data["uas"]
+	if utsOk || uasOk {
+		if err := n.Get(db); err != nil {
+			return err
+		}
+		uts := n.UTS
+		uas := n.UAS
+		if utsOk {
+			uts = data["uts"].(float64)
+		}
+		if uasOk {
+			uas = data["uas"].(float64)
+		}
+		total := int((float64(uts) + float64(uas)) / 2)
+		var grade string
+		switch {
+		case total > 80:
+			grade = "A"
+		case total > 70:
+			grade = "B"
+		case total > 60:
+			grade = "C"
+		case total > 50:
+			grade = "D"
+		default:
+			grade = "E"
+		}
+		data["grade"] = grade
+		data["total"] = total
+		fmt.Println(data["grade"])
+	}
+
 	return lib.Update(db, n, data)
 }
 

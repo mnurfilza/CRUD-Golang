@@ -8,11 +8,27 @@ import (
 
 func TestInsertMhs(t *testing.T) {
 	var dataInsertMahasiswa = []model.Mahasiswa{
-		model.Mahasiswa{NPM: "1234567890", Nama: "AIRTAS", Kelas: "5KA34"},
+		model.Mahasiswa{
+			NPM:   "1234567890",
+			Nama:  "AIRTAS",
+			Kelas: "5KA34",
+		},
 		model.Mahasiswa{NPM: "1233255422", Nama: "SARITAS", Kelas: "5KA14"},
-		model.Mahasiswa{NPM: "1232341233", Nama: "UNIRAS", Kelas: "5KA24"},
-		model.Mahasiswa{NPM: "1232455644", Nama: "DIA", Kelas: "5KA12"},
-		model.Mahasiswa{NPM: "1223131454", Nama: "NOVI", Kelas: "5KA12"},
+		model.Mahasiswa{
+			NPM:   "1232341233",
+			Nama:  "UNIRAS",
+			Kelas: "5KA24",
+		},
+		model.Mahasiswa{
+			NPM:   "1232455644",
+			Nama:  "DIA",
+			Kelas: "5KA12",
+		},
+		model.Mahasiswa{
+			NPM:   "1223131454",
+			Nama:  "NOVI",
+			Kelas: "5KA12",
+		},
 	}
 	db, err := initDatabase()
 

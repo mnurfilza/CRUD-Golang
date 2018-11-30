@@ -6,8 +6,8 @@ import (
 )
 
 type Matakuliah struct {
-	Kd_mk       string
-	Mata_kuliah string
+	Kd_mk       string `json:"kode_matkul"`
+	Mata_kuliah string `json: "mata_kuliah"`
 }
 
 var TbMatkul string = `  

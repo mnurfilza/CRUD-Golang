@@ -62,7 +62,6 @@ func Insert(db *sql.DB, t Table) error {
 	var err error
 	if t.AutoNumber() {
 		query := fmt.Sprintf("INSERT INTO %s(%s) VALUES (%s) RETURNING %s", t.Name(), strings.Join(fields[1:], ","), ToVariable(t), fieldsPK[0])
-		fmt.Println(query)
 		err = db.QueryRow(query, dst[1:]...).Scan(dstPK...)
 	} else {
 		query := fmt.Sprintf("INSERT INTO %s(%s) VALUES (%s)", t.Name(), strings.Join(fields, ","), ToVariable(t))
@@ -95,8 +94,8 @@ func ToVariable(t Table) string {
 	if t.AutoNumber() {
 		lenFields -= 1
 	}
-	for i := 0; i < lenFields; i++ {
-		temp = append(temp, fmt.Sprintf("$%d", i+1))
+	for i := 1; i <= lenFields; i++ {
+		temp = append(temp, fmt.Sprintf("$%d", i))
 
 	}
 	var result = strings.Join(temp, ",")
@@ -117,6 +116,7 @@ func Update(db *sql.DB, t Table, data map[string]interface{}) error {
 	}
 	dataUpdate := strings.Join(kolom, ",")
 	query := fmt.Sprintf("UPDATE %s SET %s WHERE %s = $1 ", t.Name(), dataUpdate, fields[0])
+	fmt.Println(query)
 	_, err := db.Exec(query, args...)
 	return err
 }
@@ -131,17 +131,17 @@ func Gets(db *sql.DB, t Table, params ...string) ([]Table, error) {
 				temp := strings.Split(fmt.Sprintf("%s", v), ",")
 				where := fmt.Sprintf("%s %s $%d", strings.ToLower(temp[0]), temp[1], i+1)
 				kolom = append(kolom, where)
-
 				args = append(args, temp[2])
+
 			}
 		}
 	}
-	dataKondisi := strings.Join(kolom, "AND")
+	dataKondisi := strings.Join(kolom, " AND ")
 	query := fmt.Sprintf("SELECT * FROM %s", t.Name())
-
 	if dataKondisi != "" {
 		query += " WHERE " + dataKondisi
 	}
+	fmt.Println(query)
 
 	data, err := db.Query(query, args...)
 	if err != nil {
