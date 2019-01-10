@@ -141,7 +141,6 @@ func Gets(db *sql.DB, t Table, params ...string) ([]Table, error) {
 	if dataKondisi != "" {
 		query += " WHERE " + dataKondisi
 	}
-	fmt.Println(query)
 
 	data, err := db.Query(query, args...)
 	if err != nil {

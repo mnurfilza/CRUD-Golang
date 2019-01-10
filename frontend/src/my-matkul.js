@@ -131,7 +131,7 @@ class MyMatkul extends PolymerElement {
   return a
  }
   _confirmClick(a){
-      // console.log(e.detail.value);
+      console.log(a.detail.value);
 
     if (a.detail.value) {
       var matkul = a.detail.value;

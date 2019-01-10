@@ -25,7 +25,7 @@ func main() {
 	cmd.Dir = fmt.Sprintf("frontend")
 	err := cmd.Start()
 	if err != nil {
-		log.Printf("command Finished with error: %v ", err.Error())
+		log.Printf("command Finished with error: %v", err.Error())
 	}
 	log.Printf("waiting for command to finish..")
 	err = cmd.Wait()

@@ -8,12 +8,12 @@ import (
 
 type Nilai struct {
 	IdNilai int     `json:"idnilai"`
-	Kd_mk   string  `json:"kode_matkul"`
+	Kd_mk   string  `json:"kd_mk"`
 	NPM     string  `json:"npm"`
 	UAS     float64 `json:"uas"`
 	UTS     float64 `json:"uts"`
 	Total   float64 `json:"total"`
-	Index   string  `json:"index"`
+	Index   string  `json:"grade"`
 }
 
 var TbNilai string = `
@@ -21,9 +21,9 @@ CREATE TABLE nilai (
 	idnilai SERIAL PRIMARY KEY,
 	kd_mk VARCHAR(10) NOT NULL,
 	npm VARCHAR(35) NOT NULL,
-	uas INT NOT NULL,
-	uts INT NOT NULL,
-	total INT NOT NULL,
+	uas REAL NOT NULL,
+	uts REAL NOT NULL,
+	total REAL NOT NULL,
 	grade VARCHAR(5) NOT NULL
 );
 `

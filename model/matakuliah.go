@@ -6,11 +6,11 @@ import (
 )
 
 type Matakuliah struct {
-	Kd_mk       string `json:"kode_matkul"`
-	Mata_kuliah string `json: "mata_kuliah"`
+	Kd_mk       string `json:"kd_mk"`
+	Mata_kuliah string `json:"mata_kuliah"`
 }
 
-var TbMatkul string = `  
+var TbMatkul string = `
 	CREATE TABLE mata_kuliah(
 		kd_mk VARCHAR(10) PRIMARY KEY NOT NULL,
 		mata_kuliah VARCHAR(35)NOT NULL

@@ -46,6 +46,7 @@ class MyNilai extends PolymerElement {
           box-shadow: 0 2px 2px -2px gray;
           font-size: 20px;
           margin-top : 20px;
+          margin-left: -15%;
         }
         .kartu-mobile:hover{
           background:black;
@@ -95,6 +96,31 @@ class MyNilai extends PolymerElement {
           border-radius: 50%;
           background: var(--paper-amber-500);
         }
+        .margin-range{
+          margin-left: -25%;
+        }
+
+        .circle[label='A']{
+          background-color: green;
+          color: white;
+        }
+        .circle[label='B']{
+          background-color: blue;
+          color: white;
+        }
+        .circle[label='C']{
+          background-color: yellow;
+          color: white;
+        }
+        .circle[label='D']{
+          background-color: orange;
+          color: white;
+        }
+        .circle[label='E']{
+          background-color: red;
+          color: white;
+        }
+        
   
 
       </style>
@@ -129,14 +155,18 @@ class MyNilai extends PolymerElement {
         <iron-list items="[[nilai]]" as="item" on-selected-item-changed="_confirmClick" selection-enabled>
         <template>
         <div>
-          <div class="kartu-mobile" npm$="[[item.npm]]">
-            <div> [[_index(index)]] </div>
+          <paper-item class="kartu-mobile horizontal margin-range" npm$="[[item.npm]]">
+          <paper-icon-item >
+            <div class="circle" id="grade" label$="[[_inisial(item.uts, item.uas)]]">[[_inisial(item.uts, item.uas)]]</div> 
+          </paper-icon-item>
+          <div class="vertical ">
             <div> [[item.npm]] </div>
             <div> [[item.kd_mk]] </div>
             <div> [[item.mataKuliah]] </div>
             <div> [[item.uts]] </div>
             <div> [[item.uas]] </div>
-          </div>
+          </paper-item>
+        </div>
         </div>
         </template>
         </iron-list>
@@ -194,8 +224,8 @@ class MyNilai extends PolymerElement {
             npm:"1711444",
             kd_mk:"pa213",
             mataKuliah:"Bahasa Indonesia",
-            uts:75,
-            uas:80
+            uts:65,
+            uas:30
           },{
             npm:"1711444",
             kd_mk:"pa213",
@@ -224,7 +254,7 @@ class MyNilai extends PolymerElement {
         let uas = nilai.uas;
         
       
-       let total = (nilai.uts + nilai.uas)/2;
+       let total = (uts + uas)/2;
        let grade = "";
       
        if (total > 80) {
@@ -263,14 +293,33 @@ class MyNilai extends PolymerElement {
       // } 
        var nilai = a.detail.value;
        this.$.npm.value = nilai.npm;
-       this.$.kd_mk.value = nilai.kd_mk;
-       this.$.mataKuliah.value = nilai.mataKuliah;
-       this.$.uts.value = nilai.uts;
-       this.$.uas.value = nilai.uas; 
-       this.$.total.value = total;
-       this.$.grade.value = grade;
+      //  this.$.grade.innerHTML = grade;
+       console.log(grade)
        }
       
+  }
+
+
+  _inisial(uts, uas){
+   
+   let total = (uts + uas)/2;
+   let grade = "";
+  
+   if (total > 80) {
+     grade = "A";
+   } else if (total > 70) {
+     grade = "B";
+   }else if (total > 60) {
+     grade ="C";
+   }else if (total > 50) {
+     grade ="D"
+   }else if (total> 40) {
+     grade = "E";
+   }else{
+     grade ="P";
+   }
+  //  console.log(grade)
+   return grade
   }
 }
 

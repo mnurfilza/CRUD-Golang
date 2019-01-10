@@ -21,6 +21,7 @@ import '@polymer/paper-item/paper-icon-item.js';
 import '@polymer/paper-fab/paper-fab.js';
 import '@polymer/paper-button/paper-button.js';
 import '@polymer/paper-item/paper-icon-item.js';
+import '@polymer/paper-checkbox/paper-checkbox.js';
 
 
 class MyMahasiswa extends PolymerElement {
@@ -47,6 +48,7 @@ class MyMahasiswa extends PolymerElement {
           box-shadow: 0 2px 2px -2px gray;
           font-size: 20px;
           margin-top : 20px;
+          margin-left: -15%;
         }
         .kartu-mobile:hover{
           background:black;
@@ -91,6 +93,10 @@ class MyMahasiswa extends PolymerElement {
         .bg-icon{
           background-color: blue;
         }
+        .circle[label='A']{
+          background-color: red;
+        }
+        
       
 
       </style>
@@ -106,7 +112,8 @@ class MyMahasiswa extends PolymerElement {
 
 
         <template is="dom-if" if="{{dekstop}}">
-        <iron-list items="[[mhs]]" as="item" on-selected-item-changed="_confirmClick" selection-enabled class="vertical">
+        <paper-button raised on-tap="delete">Delete</paper-button>
+        <iron-list items="[[mhs]]"  as="item"  on-selected-items-changed="_selected" delection-enabled class="vertical">
         <template>
         <div>
           <paper-item class="kartu horizontal" npm$="[[item.npm]]">
@@ -114,8 +121,9 @@ class MyMahasiswa extends PolymerElement {
           <div style="width: 20%;"> [[item.npm]] </div>
           <div style="width: 30%; padding:0 5px 0 5px"> [[item.nama]] </div>
           <div style="width: 4%;">K[[item.kelas]] </div>
-          <paper-button  raised>Delete</paper-button>
+          <div style="margin-left: 50px;"><paper-checkbox  id="[[index]]" on-checked-changed="_checked"></paper-checkbox></div>
         </paper-item>
+        
         </div>
         </template>
         </iron-list>
@@ -127,8 +135,8 @@ class MyMahasiswa extends PolymerElement {
         <div>
           <paper-item class="kartu-mobile horizontal" npm$="[[item.npm]]">
           <paper-icon-item >
-            <div class="circle bg-icon" label$="[[_inisial(item.nama)]]"></div> 
-          </paper-fab>
+            <div class="circle" label$="[[_inisial(item.nama)]]">[[_inisial(item.nama)]]</div> 
+          </paper-icon-item>
           <div class="vertical main-range">
           <div>[[item.npm]] </div>
           <div>[[item.nama]] </div>
@@ -146,6 +154,7 @@ class MyMahasiswa extends PolymerElement {
 
   static get properties() {
     return {
+      selectedItems:Object,
         mahasiswa:{
           type: Object,
           // notify: true,
@@ -213,6 +222,26 @@ class MyMahasiswa extends PolymerElement {
         // this.$.kelas.value = mahasiswa.kelas; 
       }
     }
+    _confirmClickitems(e){
+      console.log(e.detail.value.npm);
+    }
+
+    delete(){
+      console.log('deleted');
+      
+    }
+
+    _checked(e){
+      let check  = e.detail.value;
+      let index = e.srcElement.id;
+      let list = this.shadowRoot.querySelector('#list');
+      if (check) {
+        list.selectIndex(index);
+      }else{
+        list.deselectIndex(index);
+      }
+    }
+    
   }
 
  

@@ -6,9 +6,9 @@ import (
 )
 
 type Mahasiswa struct {
-	Nama  string `json: "nama"`
-	NPM   string `json: "npm"`
-	Kelas string `json: "kelas"`
+	Nama  string `json:"nama"`
+	NPM   string `json:"npm"`
+	Kelas string `json:"kelas"`
 }
 
 var TbMahasiswa string = `
@@ -70,6 +70,8 @@ func GetAllMahasiswa(db *sql.DB, params ...string) ([]*Mahasiswa, error) {
 	return mahasiswa, nil
 
 }
+
+
 
 // var TabelMahasiswa = lib.Table{
 // 	Name: "mahasiswa",

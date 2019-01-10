@@ -53,10 +53,12 @@ class MyView1 extends PolymerElement {
           cursor: pointer;
         }
       </style>
+
         <iron-media-query 
         query="(min-width:600px)" 
         query-matches="{}">
         </iron-media-query>
+        
       <div class="card">
         <div class="circle">1</div>
         <h1>View One</h1>
